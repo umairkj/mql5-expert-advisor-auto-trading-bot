@@ -9,6 +9,9 @@
 //--- input parameters
 input double      default_stop_loss;
 input double      default_pips;
+
+#include<Trade\Trade.mqh>
+CTrade trade;
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
@@ -30,6 +33,8 @@ void OnDeinit(const int reason)
    
   }
   
+  /*
+  
   void OpenBuyOrder()
   {
     MqlTradeRequest myRequest;
@@ -47,10 +52,12 @@ void OnDeinit(const int reason)
     OrderSend(myRequest,myResult);   
     
   }
-   void OpenSellOrder()
+   void OpenSellOrder(double Ask)
   {
     MqlTradeRequest myRequest;
     MqlTradeResult myResult;
+    
+    
     
     myRequest.action = TRADE_ACTION_DEAL;
     myRequest.type = ORDER_TYPE_SELL;
@@ -58,18 +65,24 @@ void OnDeinit(const int reason)
     myRequest.volume = default_pips;
     myRequest.type_filling = ORDER_FILLING_FOK;
     myRequest.price = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
-    myRequest.tp = 50;
+    myRequest.tp = (_Point * 30) + Ask ;
     myRequest.sl = 0;
     myRequest.deviation = 50;
     OrderSend(myRequest,myResult);   
     
   }
+  */
 //+------------------------------------------------------------------+
 //| Expert tick function                                             |
 //+------------------------------------------------------------------+
 void OnTick()
   {
 //---
+
+   double ask = NormalizeDouble(SymbolInfoDouble(_Symbol, SYMBOL_ASK),_Digits);
+   double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+   double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+   
    //Create arrays for several prices
    
    double myMovingAverageArray1[], myMovingAverageArray2[];
@@ -95,13 +108,16 @@ void OnTick()
    //Check if the 20 candle EA is above the 50 candle EA
    if( (myMovingAverageArray1[0] > myMovingAverageArray2[0]) && ( myMovingAverageArray1[1] < myMovingAverageArray1[1]) )
    {
-      Comment("BUY");
+      
+      trade.Buy(0.01,_Symbol,ask,0,(ask + 100 * _Point),"Initiating Buy");
+      
+      
    }
    
    //Check if the 50 candle EA is above the 50 candle EA
    if( (myMovingAverageArray1[0] < myMovingAverageArray2[0]) && ( myMovingAverageArray1[1] < myMovingAverageArray1[1]) )
    {
-      Comment("SELL");
+      trade.Sell(0.01,_Symbol,ask,0,(ask + 100 * _Point),"Initiating Buy");
    }
    
    
