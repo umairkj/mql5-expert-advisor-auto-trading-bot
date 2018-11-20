@@ -7,8 +7,8 @@
 #property link      "https://www.merrycode.com"
 #property version   "1.00"
 //--- input parameters
-input int      default_stop_loss;
-input int      default_pips;
+input double      default_stop_loss;
+input double      default_pips;
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
@@ -29,6 +29,41 @@ void OnDeinit(const int reason)
    EventKillTimer();
    
   }
+  
+  void OpenBuyOrder()
+  {
+    MqlTradeRequest myRequest;
+    MqlTradeResult myResult;
+    
+    myRequest.action = TRADE_ACTION_DEAL;
+    myRequest.type = ORDER_TYPE_BUY;
+    myRequest.symbol = _Symbol;
+    myRequest.volume = default_pips;
+    myRequest.type_filling = ORDER_FILLING_FOK;
+    myRequest.price = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+    myRequest.tp = 50;
+    myRequest.sl = 0;
+    myRequest.deviation = 50;
+    OrderSend(myRequest,myResult);   
+    
+  }
+   void OpenSellOrder()
+  {
+    MqlTradeRequest myRequest;
+    MqlTradeResult myResult;
+    
+    myRequest.action = TRADE_ACTION_DEAL;
+    myRequest.type = ORDER_TYPE_SELL;
+    myRequest.symbol = _Symbol;
+    myRequest.volume = default_pips;
+    myRequest.type_filling = ORDER_FILLING_FOK;
+    myRequest.price = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+    myRequest.tp = 50;
+    myRequest.sl = 0;
+    myRequest.deviation = 50;
+    OrderSend(myRequest,myResult);   
+    
+  }
 //+------------------------------------------------------------------+
 //| Expert tick function                                             |
 //+------------------------------------------------------------------+
@@ -40,10 +75,10 @@ void OnTick()
    double myMovingAverageArray1[], myMovingAverageArray2[];
    
    //define the properties of the Moving Average 1
-   int movingAverageDefination1 = iMA(_Symbol, Period, 20, 0, MODE_EMA, PRICE_CLOSE);
+   int movingAverageDefination1 = iMA(_Symbol, _Period, 20, 0, MODE_EMA, PRICE_CLOSE);
    
    //define the properties of the Moving Average 2
-   int movingAverageDefination2 = iMA(_Symbol, Period, 50, 0, MODE_EMA, PRICE_CLOSE);
+   int movingAverageDefination2 = iMA(_Symbol, _Period, 50, 0, MODE_EMA, PRICE_CLOSE);
    
    //Sorting the price array 1 for the current candle downwards
    ArraySetAsSeries(myMovingAverageArray1, true);
@@ -68,15 +103,6 @@ void OnTick()
    {
       Comment("SELL");
    }
-   
-   
-   
-   
-   
-   
-   
-   
-   
    
    
   }
