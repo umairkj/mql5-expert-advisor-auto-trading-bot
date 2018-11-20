@@ -106,18 +106,24 @@ void OnTick()
    CopyBuffer(movingAverageDefination2,0,0,3,myMovingAverageArray2);
    
    //Check if the 20 candle EA is above the 50 candle EA
-   if( (myMovingAverageArray1[0] > myMovingAverageArray2[0]) && ( myMovingAverageArray1[1] < myMovingAverageArray1[1]) )
+   if( (myMovingAverageArray1[0] > myMovingAverageArray2[0]) 
+   && ( myMovingAverageArray1[1] < myMovingAverageArray2[1]) )
    {
       
-      trade.Buy(0.01,_Symbol,ask,0,(ask + 100 * _Point),"Initiating Buy");
+      trade.Buy(0.10,_Symbol,ask,0,(ask + 40 * _Point),"Initiating Buy");
+      
+      Print("BUY!!!!!");
       
       
    }
    
    //Check if the 50 candle EA is above the 50 candle EA
-   if( (myMovingAverageArray1[0] < myMovingAverageArray2[0]) && ( myMovingAverageArray1[1] < myMovingAverageArray1[1]) )
+   if( (myMovingAverageArray1[0] < myMovingAverageArray2[0]) 
+   && ( myMovingAverageArray1[1] > myMovingAverageArray2[1]) )
    {
-      trade.Sell(0.01,_Symbol,ask,0,(ask + 100 * _Point),"Initiating Buy");
+      trade.Sell(0.10,_Symbol,ask,0,(ask + 40 * _Point),"Initiating Buy");
+      
+       Print("BUY!!!!!");
    }
    
    
