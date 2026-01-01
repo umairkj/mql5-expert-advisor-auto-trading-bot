@@ -1,8 +1,6 @@
 # mql5-expert-advisor-auto-trading-bot
-This is an alpha (immature) version of trading advisor that I have been making for learning purposes. 
+A sample trading advisor for Meta Trader 5 which you can use as a base to build your own expert advisor
 
-Right now, it is just raw code. Please do not use it for real trading. 
-
-Feel free to message me for any questions related to the updates.
+Please do not use it for real trading.
 
 Thank you and happy coding
